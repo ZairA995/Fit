@@ -3,11 +3,13 @@ package com.example.fit
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
+const val key1 = "key1"
 class Profile : AppCompatActivity() {
     lateinit var datePicker: EditText
     lateinit var timePicker: TextView
@@ -38,13 +40,18 @@ class Profile : AppCompatActivity() {
         adapter?.addItems(stdList)
 
         adapter?.setOnClickItem {
-            databaseHelper.cancelTraining(idClient, it.getIdTr())
-            var status = databaseHelper.changeCountPeople(it.getIdTraining(),
-                    it.getDateTraining(),it.getTimeTraining(),it.getCountRemainsPeople() + 1)
-            if (status > -1)
+            var res = databaseHelper.cancelTraining(idClient, it.getIdTr())
+            if (res > -1)
             {
-                Toast.makeText(this@Profile, "Место освобождено", Toast.LENGTH_SHORT).show()
+                var status = databaseHelper.changeCountPeople(it.getIdTraining(),
+                    it.getDateTraining(),it.getTimeTraining(),it.getCountRemainsPeople() + 1)
+                Log.e("text","${it.getIdTraining()} + ${it.getDateTraining()} + ${it.getTimeTraining()} + ${it.getCountRemainsPeople()}")
+                if (status > -1)
+                {
+                    Toast.makeText(this@Profile, "Место освобождено", Toast.LENGTH_SHORT).show()
+                }
             }
+            var stdList = databaseHelper.getNearTraining(idClient, date.toString())
             adapter?.addItems(stdList)
             std = it
         }

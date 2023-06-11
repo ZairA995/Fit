@@ -22,6 +22,7 @@ class Raspisanie : AppCompatActivity() {
     lateinit var databaseHelper: DatabaseHelper
     var idClient: Int = 0
     val schoose = 0
+    val choose1 = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_raspisanie)
@@ -84,27 +85,6 @@ class Raspisanie : AppCompatActivity() {
             intent.putExtra("idClient", idClient)
             std = it
             startActivityForResult(intent,schoose)      }
-        //databaseHelper!!.addTrainer("Иванов",15)
-        //databaseHelper!!.addTrainer("Сидорчук",4)
-
-        //databaseHelper!!.addClient("Борис","9843")
-        //databaseHelper!!.addClient("Сидор","44333")
-
-        //databaseHelper!!.addTraining("Джампинг",60,"Прыжки на мини-батутах",300.00,10)
-        //databaseHelper!!.addTraining("Йога",45,"Прыжки на миртптртпх",280.00,5)
-        //databaseHelper!!.addTraining("Джампинг2",60,"Прыжки арптатетнтх",600.00,1)
-
-        //databaseHelper!!.addTrainerTraining(1,1, "11/06/2023",10,4)
-        //databaseHelper!!.addTrainerTraining(2,1, "11/06/2023",11,6)
-        //databaseHelper!!.addTrainerTraining(1,2, "12/06/2023",12,10)
-        //databaseHelper!!.addTrainerTraining(1,1, "5/06/2023",23,10)
-        //databaseHelper!!.addTrainerTraining(2,1, "23/05/2023",13,10)
-        //databaseHelper!!.addTrainerTraining(1,2, "24/05/2023",15,4)
-
-        //databaseHelper!!.addClientTraining(1,1)
-        //databaseHelper!!.addClientTraining(1,2)
-        //databaseHelper!!.addClientTraining(2,1)
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -116,6 +96,13 @@ class Raspisanie : AppCompatActivity() {
                 val stdList = databaseHelper.allTrainingDay(datePicker.text.toString())
                 adapter?.addItems(stdList)
             }
+        }
+        if (requestCode == choose1) {
+            if (resultCode == Activity.RESULT_OK) {
+                var res = data?.getStringExtra(key1)
+            }
+            val stdList = databaseHelper.allTrainingDay(datePicker.text.toString())
+            adapter?.addItems(stdList)
         }
     }
     private fun setDate()
@@ -153,7 +140,8 @@ class Raspisanie : AppCompatActivity() {
     }
 
     fun priceClick(view: View) {
-
+        val intent = Intent(this,Price::class.java)
+        startActivity(intent)
     }
     fun trainingClick(view: View) {
 
@@ -173,6 +161,7 @@ class Raspisanie : AppCompatActivity() {
         val intent = Intent(this,Profile::class.java)
         intent.putExtra("idClient", idClient)
         intent.putExtra("date", date.toString())
-        startActivity(intent)
+        startActivityForResult(intent,choose1)
+
     }
 }

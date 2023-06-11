@@ -132,10 +132,11 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.insert(TABLE_CLIENT_TRAINING, null, values)
     }
 
-    fun cancelTraining(idClient: Int,idTraining: Int)
+    fun cancelTraining(idClient: Int,idTraining: Int):Int
     {
         val db = this.writableDatabase
-        db.delete(TABLE_CLIENT_TRAINING, "idClient = ${idClient} and idTraining = ${idTraining}", null)
+        var status = db.delete(TABLE_CLIENT_TRAINING, "idClient = ${idClient} and idTraining = ${idTraining}", null)
+        return status
     }
 
     //получение списка тренировок на выбранный день
@@ -194,14 +195,47 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         if (c.moveToFirst()) {
             do {
                 val userModel = UserModel()
+
                 userModel.setNameTraining(c.getString(c.getColumnIndexOrThrow("nameTraining")))
                 userModel.setDateTraining(c.getString(c.getColumnIndexOrThrow("dateOfTraining")))
                 userModel.setTimeTraining(c.getInt(c.getColumnIndexOrThrow("timeOfTraining")))
+                userModel.setIdTraining(c.getInt(c.getColumnIndexOrThrow("idTraining")))
+                userModel.setIdTrainer(c.getInt(c.getColumnIndexOrThrow("idTrainer")))
+                userModel.setCountPeople(c.getInt(c.getColumnIndexOrThrow("countPeople")))
+                userModel.setCountRemainsPeople(c.getInt(c.getColumnIndexOrThrow("countRemainsPeople")))
+                userModel.setDuration(c.getInt(c.getColumnIndexOrThrow("durationTraining")))
+                userModel.setDescription(c.getString(c.getColumnIndexOrThrow("description")))
+                userModel.setIdTr(c.getInt(c.getColumnIndexOrThrow("id")))
                 stdList.add(userModel)
             } while (c.moveToNext())
         }
         return stdList
     }
+
+    fun getPriceList(): ArrayList<UserModel>
+    {
+        val stdList: ArrayList<UserModel> = ArrayList()
+        val query = "SELECT * FROM Training;"
+
+        Log.e("query","${query}")
+        val db = this.readableDatabase
+        val c = db.rawQuery(query, null)
+        if (c.moveToFirst()) {
+            do {
+                val userModel = UserModel()
+
+                userModel.setNameTraining(c.getString(c.getColumnIndexOrThrow("nameTraining")))
+                userModel.setIdTraining(c.getInt(c.getColumnIndexOrThrow("idTraining")))
+                userModel.setCost(c.getDouble(c.getColumnIndexOrThrow("cost")))
+                userModel.setCountPeople(c.getInt(c.getColumnIndexOrThrow("countPeople")))
+                userModel.setDuration(c.getInt(c.getColumnIndexOrThrow("durationTraining")))
+                userModel.setDescription(c.getString(c.getColumnIndexOrThrow("description")))
+                stdList.add(userModel)
+            } while (c.moveToNext())
+        }
+        return stdList
+    }
+
 
     //авторизация (поиск количества пользователей с указанным логином и паролем)
     fun getClientCount(search_name: String,search_phone:String):Int {
