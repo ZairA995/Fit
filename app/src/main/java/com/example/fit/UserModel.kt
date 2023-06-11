@@ -14,6 +14,7 @@ class UserModel : Serializable {
     private var cost: Double = 0.0
     private var idTrainer: Int = 0
     private var idTraining: Int = 0
+    private var idTr: Int = 0
 
     fun getCountPeople(): Int {
         return countPeople
@@ -50,8 +51,15 @@ class UserModel : Serializable {
         this.description = description
     }
 
+    fun getIdTr(): Int {
+        return idTr
+    }
+    fun setIdTr(idTr: Int) {
+        this.idTr = idTr
+    }
+
     fun getIdTrainer(): Int {
-        return idTrainer
+        return idTrainer!!
     }
     fun setIdTrainer(idTrainer: Int) {
         this.idTrainer = idTrainer
@@ -79,7 +87,7 @@ class UserModel : Serializable {
     }
 
     fun getIdTraining(): Int {
-        return idTraining
+        return idTraining!!
     }
     fun setIdTraining(idTraining: Int) {
         this.idTraining = idTraining

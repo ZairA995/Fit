@@ -74,11 +74,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
+            android:id="@+id/onRegis"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:background="#E9C531"
-            android:paddingLeft="15dp"
-            android:onClick="regOnLesson"
+            android:paddingStart="15dp"
+            android:onClick="regOnClick1"
             android:text="Записаться" />
     </LinearLayout>
 
